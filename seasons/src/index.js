@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import SeasonDisplay from './SeasonDisplay';
 import Spinner from './Spinner';
 
-
+// when we call setState() then component re-render itself
+// that is, render method is called again
 class App extends React.Component{
         // constructor(props){
         //     super(props);
