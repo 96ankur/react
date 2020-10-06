@@ -27,10 +27,11 @@ class SongList extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         songs: state.songs
     };
 }
 
-export default connect(mapStateToProps, { selectSong })(SongList);
+export default connect(mapStateToProps, { selectSong })(SongList); 
+// selectSong is passed in connect() to tell redux that it is a action creator
+// connect() function will automatically call dispatch function with all the action creator
