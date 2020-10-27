@@ -5,7 +5,7 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     await dispatch(fetchPosts());
 
     const userIds = _.uniq(_.map(getState().posts, 'userId'));
-    userIds.forEach(id => dispatch(fetchUser()))
+    userIds.forEach(id => dispatch(fetchUser(id)))
 }
 
 // asynchronous action creator
@@ -15,7 +15,7 @@ export const fetchPosts = () => async dispatch => {
             type: 'FETCH_POSTS',
             payload: response.data
         });
-    };
+};
 
 export const fetchUser = (id) => async dispatch => {
     const response = await jsonPlaceholder.get(`/users/${id}`);
