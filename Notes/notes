@@ -1,0 +1,98 @@
+1)What is React?
+    -> Open source JS library
+    -> Used to create single page application
+    -> Handles view layer of mobile apps
+
+2) Main feature of react?
+    -> uses virtualDOM instead of realDOM (realDOM manipultaion is expensive)
+    -> supports server side rendering
+    -> data flow is unidirectional
+    -> use reusable UI components to create view
+
+3) What is JSX?
+    -> JSX is javascript XML - extension to the javascript language syntax
+    -> JSX is not necessary to write react applications.
+    -> syntactic sugar for the React.createElement() function
+    -> JSX is transpiles (by babel) to pure JS which a browser can understand.
+
+        React.createElement('div', null, 'Hi there!')
+        <div>Hi there!</div>
+
+4) React elements
+    -> Elements are the smallest building blocks of React apps.
+    -> An Element is a plain object describing what you want to appear on the screen
+    -> The object representation of React Element would be as follows:
+
+        const element = React.createElement(
+          'div',
+          {id: 'login-btn'},
+          'Login'
+        )
+
+        The above React.createElement() function returns an object:
+
+        {
+          type: 'div',
+          props: {
+            children: 'Login',
+            id: 'login-btn'
+          }
+        }
+
+        And finally it renders to the DOM using ReactDOM.render():
+
+        <div id='login-btn'>Login</div>
+
+5) Updating the Rendered Element
+    -> React elements are immutable. Once you create an element, you can’t change its 
+       children or attributes.
+    -> The only way to update the UI is to create a new element, and pass it to
+       ReactDOM.render().
+    -> React DOM compares the element and its children to the previous one, and only applies
+       the DOM updates necessary to bring the DOM to the desired state.
+
+6) What is component?
+    -> Components let you split the UI into independent, reusable pieces, and think about
+       each piece in isolation.
+    -> It can be a class with a render() method. Alternatively, it can be defined as a
+       function. In either case, it takes props as an input, and returns a JSX tree as 
+       the output
+
+=> A component either function or class, it must never modify its own props.
+
+7) Pure component
+    -> React.PureComponent is exactly the same as React.Component except that it handles
+       the shouldComponentUpdate() method.
+    -> When props or state changes, PureComponent will do a shallow comparison on both
+       props and state.
+    -> We can create a pure component by extending the PureComponent class.
+    -> If there is no difference, the component is not re-rendered - performance boost.
+
+8) What is state?
+    ->  State of a component is an object that holds some information that may change over
+        the lifetime of the component.
+    ->  State is similar to props, but it is private and fully controlled by the component.
+        i.e, It is not accessible to any component other than the one that owns and sets it.
+    ->  Do Not Modify State Directly:
+            // Wrong
+            this.state.comment = 'Hello';
+
+        Instead, use setState():
+            // Correct
+            this.setState({comment: 'Hello'});
+
+    ->  State Updates May Be Asynchronous
+    ->  React may batch multiple setState() calls into a single update for performance.
+        // Wrong
+        this.setState({
+          counter: this.state.counter + this.props.increment,
+        });
+
+        // Correct
+        this.setState((state, props) => ({
+          counter: state.counter + props.increment
+        }));
+
+    -> Data Flows Down - “unidirectional” data flow
+        -> Neither parent nor child components can know if a certain component is 
+           stateful or stateless
