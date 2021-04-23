@@ -5,7 +5,7 @@
 
 2) Main feature of react?
     -> uses virtualDOM instead of realDOM (realDOM manipultaion is expensive)
-    -> supports server side rendering
+    -> supports server side rendering using Next.js
     -> data flow is unidirectional
     -> use reusable UI components to create view
 
@@ -244,3 +244,104 @@
        => Unmounting: In this last phase, the component is not needed and get unmounted
                       from the browser DOM. This phase includes componentWillUnmount() 
                       lifecycle method.
+
+20) What is context?
+    -> Context provides a way to pass data through the component tree without having to pass props down
+       manually at every level.
+    
+    const ThemeContext = React.createContext('light');
+    class App extends React.Component {
+      render() {
+        // Use a Provider to pass the current theme to the tree below.    // Any component can read it, no matter how deep it is.    // In this example, we're passing "dark" as the current value.    return (
+          <ThemeContext.Provider value="dark">
+            <Toolbar />
+          </ThemeContext.Provider>
+        );
+      }
+    }
+
+    // A component in the middle doesn't have to// pass the theme down explicitly anymore.
+    function Toolbar() {
+      return (
+        <div>
+          <ThemedButton />
+        </div>
+      );
+    }
+
+    class ThemedButton extends React.Component {
+      // Assign a contextType to read the current theme context.  // React will find the closest theme Provider above and use its value.  // In this example, the current theme is "dark".  
+      static contextType = ThemeContext;
+      render() {
+        return <Button theme={this.context} />;
+      }
+    }
+
+  => Consuming multiple contexts
+
+      // Theme context, default to light theme
+      const ThemeContext = React.createContext('light');// Signed-in user context
+
+      const UserContext = React.createContext({
+        name: 'Guest',
+      });
+
+
+      class App extends React.Component {
+        render() {
+          const {signedInUser, theme} = this.props;
+
+          // App component that provides initial context values
+          return (
+            <ThemeContext.Provider value={theme}>
+              <UserContext.Provider value={signedInUser}>
+                <Layout />
+              </UserContext.Provider>
+            </ThemeContext.Provider>
+          );
+        }
+      }
+
+      function Layout() {
+        return (
+          <div>
+            <Sidebar />
+            <Content />
+          </div>
+        );
+      }
+
+      // A component may consume multiple contexts
+      function Content() {
+        return (
+          <ThemeContext.Consumer>
+              {theme => (        
+                <UserContext.Consumer> 
+                  {user => (            
+                    <ProfilePage user={user} theme={theme} />          
+                  )}        
+                </UserContext.Consumer>      
+              )}
+          </ThemeContext.Consumer>  );
+      }
+
+21) What is children prop?
+    ->  Children is a prop (this.props.children) that allow you to pass components as data to other
+        components, just like any other prop you use. Component tree put between component's opening and
+        closing tag will be passed to that component as children prop.
+
+22) What is the purpose of using super constructor with props argument?
+    ->  A child class constructor cannot make use of this reference until super() method
+        has been called. The same applies for ES6 sub-classes as well. The main reason of
+        passing props parameter to super() call is to access this.props in your child
+        constructors.
+
+          Passing props:
+
+          class MyComponent extends React.Component {
+            constructor(props) {
+              super(props)
+
+              console.log(this.props) // prints { name: 'John', age: 42 }
+            }
+          }
